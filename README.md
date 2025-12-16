@@ -3,56 +3,101 @@
 ## Overview
 Clean Architecture is a software design approach that separates concerns into layers, making systems independent of frameworks, UI, databases, and external services.
 
-## Principles
-- Independent of frameworks
-- Testable
-- Independent of UI
-- Independent of database
-- Independent of external agencies
-- Dependency rule: source code dependencies point inward
+## Key rules
+### 1. Dependencies point inward
+- Outer layers depend on inner layers
+- Inner layers know nothing about outer layers
+### 2. Business logic is isolated
+- Frameworks, databases, UI are replaceable
+### 3. High-level policies do not depend on low-level details
+
 
 ## Architecture Layers
 
-### 1. Domain
-- Core business rules
-- Enterprise-wide logic
-- No dependencies on other layers
+### 1. Domain (The Core Business)
+Purpose
 
-### 2. Application
-- Application-specific business rules
-- Orchestrates data flow between entities and interfaces
-- Depends only on Entities
+The Domain layer contains pure business logic and rules.
+It is the most stable layer and should almost never change.
 
-### 3. Infrastructure
-- Converts data between Use Cases and external layers
-- Includes controllers, presenters, gateways
-- Depends on Use Cases and Entities
-
-### 4. Api
-- External tools and technologies
-- UI, databases, web frameworks, messaging
-- Depends on Interface Adapters
-
-
-## Clean Architecture Map
-- Domain
+What goes here
 - Entities
-- ValueObjects
+- Value Objects
+- Domain Events
+- Domain Exceptions
+- Interfaces (only if they are domain-related)
 
-### Application
+What must NOT be here
+- ❌ Entity Framework
+- ❌ ASP.NET Core
+- ❌ Logging
+- ❌ HTTP
+- ❌ Any external libraries (as much as possible)
+
+### 2. Application (Use Cases)
+Purpose
+
+The Application layer orchestrates what the system does, not how it does it.
+What goes here
+
+- Use cases (Commands & Queries)
 - DTOs
-- Interfaces
-- UseCases
+- Interfaces for persistence & services
+- Business workflows
+- Validation logic (business-level)
 
-### Infrastructure
-- Persistence
-- Repositories
+What must NOT be here
 
-### Api
-- Controllers
-- Middlewares
+- ❌ EF Core implementations
+- ❌ HTTP concerns
+- ❌ Controllers
+- ❌ Database details
 
+### 3. Infrastructure (Details & Implementations)
+Purpose
 
+The Infrastructure layer contains all technical details.
+
+This is where you put:
+- Database access
+- EF Core
+- File system
+- Email services
+- External APIs
+- Logging implementations
+
+What goes here
+- Repository implementations
+- DbContext
+- External service clients
+- Configurations
+
+Dependency Direction
+- Infrastructure depends on Application
+- Infrastructure implements Application interfaces
+
+### 4. Api (Presentation)
+Purpose
+
+The API layer handles communication with the outside world.
+
+Responsibilities
+- HTTP requests & responses
+- Model binding
+- Authentication & authorization
+- Status codes
+- Mapping DTOs
+
+What must NOT be here
+- ❌ Business logic
+- ❌ Database access
+- ❌ EF Core
+
+### Mental Model to Remember
+- Domain → What is true in the business
+- Application → What the system does
+- Infrastructure → How it is done
+- API → How users talk to it
 
 ## ⭐ All Clean Architecture variants use the same 4 conceptual layers, but different authors rename them.
 
@@ -62,10 +107,10 @@ Below is the definitive mapping so you can see why everything looks different bu
 
 These NEVER change:
 
-- 1. Entities
-- 2. Use Cases
-- 3. Interface Adapters
-- 4. Frameworks & Drivers
+- **1. Entities**
+- **2. Use Cases**
+- **3. Interface Adapters**
+- **4. Frameworks & Drivers**
 
 Everything else you see online is just renaming these.
 
@@ -89,3 +134,46 @@ This will help you see how the same architecture is renamed in different sources
 | **2. Use Cases**             | Use Cases            | Application Services | Application    | Application                | Services       | Application workflows, orchestrators             |
 | **3. Interface Adapters**    | Interface Adapters   | Ports/Adapters       | Presentation   | API / Controllers / DTOs   | Web Layer      | Converts external input/output to/from use cases |
 | **4. Frameworks & Drivers**  | Frameworks & Drivers | Infrastructure       | Infrastructure | Infrastructure             | Data Layer     | EF Core, DB, APIs, Email, External systems       |
+
+
+## Clean Architecture Project Structure
+### Domain
+- Entities
+  - Order
+  - User
+- ValueObjects
+  - Money
+
+### Application
+- DTOs
+  - CreateOrderRequest
+  - RegisterUserRequest
+- Interfaces
+  - IOrderRepository
+  - IUserRepository
+- UseCases
+  - CreateOrderUseCase
+  - GetOrderUseCase
+  - RegisterUserHandler
+  - ShipOrderHandler
+
+### Infrastructure
+- Persistence
+  - Configurations
+    - OrderConfiguration
+  - AppDbContext
+- Repositories
+  - OrderRepository
+  - UserRepository
+
+### Api
+- Controllers
+  - OrdersController
+  - UsersController
+- Middlewares
+  - ExceptionMiddleware
+  - RequestLoggingMiddleware
+
+# Onion Architecture
+
+
