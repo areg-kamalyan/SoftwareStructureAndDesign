@@ -1,6 +1,6 @@
 # Clean Architecture
+Overview
 
-## Overview
 Clean Architecture is a software design approach that separates concerns into layers, making systems independent of frameworks, UI, databases, and external services.
 
 ## Key rules
@@ -14,7 +14,7 @@ Clean Architecture is a software design approach that separates concerns into la
 
 ## Architecture Layers
 
-### 1. Domain (The Core Business)
+### 1. Domain (Core Business)
 Purpose
 
 The Domain layer contains pure business logic and rules.
@@ -136,15 +136,131 @@ This will help you see how the same architecture is renamed in different sources
 | **4. Frameworks & Drivers**  | Frameworks & Drivers | Infrastructure       | Infrastructure | Infrastructure             | Data Layer     | EF Core, DB, APIs, Email, External systems       |
 
 
-## Clean Architecture Project Structure
-### Domain
+# Onion Architecture
+Overview
+
+Onion Architecture is a software design approach that places business logic at the center of the application and forces all external concerns to depend on it.
+
+The architecture is organized in concentric layers, where dependencies always point inward, making the system maintainable, testable, and independent of frameworks, databases, and UI technologies.
+
+## Key rule
+### 1. Dependencies point inward
+- Outer layers depend on inner layers
+- Inner layers know nothing about outer layers
+### 2. Business logic is isolated
+- Frameworks, databases, UI, and external services are replaceable
+- Core logic is protected from technical changes
+### 3. High-level policies do not depend on low-level details
+- Business rules define interfaces
+- Infrastructure provides implementations
+
+## Architecture Layers
+### 1. Domain (Core Business)
+Purpose
+
+The Domain layer represents the heart of the system.
+It contains pure business rules and concepts and is the most stable layer.
+
+What goes here
+- Entities
+- Value Objects
+- Domain Services
+- Domain Events
+- Domain Exceptions
+- Interfaces (repository or domain-specific abstractions)
+
+What must NOT be here
+- ❌ Entity Framework
+- ❌ ASP.NET Core
+- ❌ HTTP
+- ❌ Logging
+- ❌ File system
+- ❌ External services
+- ❌ Infrastructure concerns
+
+### 2. Services (Application Layer)
+Purpose
+
+The Services layer (often called the Application layer) defines use cases and application workflows.
+
+It coordinates domain objects to fulfill business operations but does not contain technical details.
+
+What goes here
+- Application services
+- Use cases
+- Commands & Queries
+- DTOs
+- Interfaces for repositories and external services
+- Business-level validation
+
+What must NOT be here
+- ❌ EF Core implementations
+- ❌ Database access
+- ❌ HTTP concerns
+- ❌ Controllers
+- ❌ Framework-specific code
+
+
+### 3. Infrastructure (Technical Details)
+Purpose
+
+The Infrastructure layer contains all technical implementations required by the application.
+
+It is the most volatile layer and can change without affecting business logic.
+
+This is where you put
+- Database access
+- EF Core
+- External APIs
+- Email services
+- File system access
+- Logging implementations
+- Caching
+- Messaging systems
+
+What goes here
+- Repository implementations
+- DbContext
+- External service clients
+- Configuration classes
+
+Dependency Direction
+- Infrastructure depends on Services
+- Infrastructure implements interfaces defined in Services or Domain
+
+### 4. Web (Presentation Layer)
+Purpose
+
+The Web layer is the entry point of the system.
+It handles communication with the outside world (HTTP, UI, etc.).
+
+Responsibilities
+- HTTP requests & responses
+- Controllers
+- Authentication & authorization
+- Input validation (UI-level)
+- Mapping DTOs
+- Dependency Injection
+- Filters
+- Middleware
+
+What must NOT be here
+- ❌ Business logic
+- ❌ Domain rules
+- ❌ Database access
+- ❌ EF Core
+- ❌ Infrastructure logic
+
+# Clean Architecture Project Structure
+
+Domain
 - Entities
   - Order
   - User
 - ValueObjects
   - Money
 
-### Application
+Application
 - DTOs
   - CreateOrderRequest
   - RegisterUserRequest
@@ -157,7 +273,7 @@ This will help you see how the same architecture is renamed in different sources
   - RegisterUserHandler
   - ShipOrderHandler
 
-### Infrastructure
+Infrastructure
 - Persistence
   - Configurations
     - OrderConfiguration
@@ -166,7 +282,7 @@ This will help you see how the same architecture is renamed in different sources
   - OrderRepository
   - UserRepository
 
-### Api
+Api
 - Controllers
   - OrdersController
   - UsersController
@@ -174,6 +290,38 @@ This will help you see how the same architecture is renamed in different sources
   - ExceptionMiddleware
   - RequestLoggingMiddleware
 
-# Onion Architecture
+ # Onion Architecture Project Structure
 
+Domain
+- Entities
+  - Order
+  - User
+- ValueObjects
+  - Money
+- Interfaces
+  - IOrderRepository
+  - IUserRepository
 
+Services
+- Requests
+  - CreateOrderRequest
+  - RegisterUserRequest
+- OrderService
+- UserService
+
+Infrastructure
+- Persistence
+  - Configurations
+    - OrderConfiguration
+  - AppDbContext
+- Repositories
+  - OrderRepository
+  - UserRepository
+
+Web
+- Controllers
+  - OrdersController
+  - UsersController
+- Middlewares
+  - ExceptionMiddleware
+  - RequestLoggingMiddleware
