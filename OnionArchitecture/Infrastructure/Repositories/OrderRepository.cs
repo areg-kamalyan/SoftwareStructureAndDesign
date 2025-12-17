@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class OrderRepository : IOrderRepository
+    internal class OrderRepository : IOrderRepository
     {
         private readonly AppDbContext _context;
 

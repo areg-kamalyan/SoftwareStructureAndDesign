@@ -7,7 +7,7 @@ namespace Infrastructure.Repositories
 {
     // Infrastructure/Data/EfOrderRepository.cs
     // Implements the interface defined in the Application layer
-    public class OrderRepository : IOrderRepository
+    internal class OrderRepository : IOrderRepository
     {
         private readonly AppDbContext _context;
 

@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    // Implements the interface defined in the Application layer (outer layer depends on inner contract)
-    public class UserRepository : IUserRepository
+    internal class UserRepository : IUserRepository
     {
         private readonly AppDbContext _context;
 

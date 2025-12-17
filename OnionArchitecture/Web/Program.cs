@@ -1,7 +1,4 @@
-using Domain.Interfaces;
-using Infrastructure.Persistence;
-using Infrastructure.Repositories;
-using Services;
+using Infrastructure;
 using Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,11 +11,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext, AppDbContext>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<OrderService>();
-builder.Services.AddScoped<UserService>();
+
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
