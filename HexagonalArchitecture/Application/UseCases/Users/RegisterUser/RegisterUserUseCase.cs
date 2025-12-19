@@ -1,22 +1,22 @@
-﻿using Domain.Entities;
-using Services.Interfaces.Repositories;
-using Services.Interfaces.Services;
-using Services.Commands;
-using Services.DTOs;
+﻿using Application.DTOs;
+using Application.Ports.Input;
+using Application.Ports.Output;
+using Domain.Entities;
 
-namespace Services
+namespace Application.UseCases.Users.RegisterUser
 {
-    public class UserService: IUserService
+    // This handler orchestrates the application logic
+    public class RegisterUserUseCase : IRegisterUserUseCase
     {
         private readonly IUserRepository _userRepository;
 
-        public UserService(IUserRepository userRepository)
+        public RegisterUserUseCase(IUserRepository userRepository)
         {
             // Depends on the interface (abstraction) defined in this same layer
             _userRepository = userRepository;
         }
 
-        public async Task<UserDto> RegisterUserAsync(RegisterUserCommand command)
+        public async Task<UserDto> ExecuteAsync(RegisterUserCommand command)
         {
             var existingUser = await _userRepository.GetByEmailAsync(command.Email);
 

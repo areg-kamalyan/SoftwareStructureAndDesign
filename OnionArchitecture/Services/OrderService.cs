@@ -1,10 +1,13 @@
 ﻿using Domain.Entities;
-using Domain.Interfaces;
-using Services.Requests;
+using Services.Interfaces.Repositories;
+using Services.Interfaces.Services;
+using Services.Commands;
+using Services.DTOs;
+using Services.Querys;
 
 namespace Services
 {
-    public class OrderService
+    public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
@@ -14,38 +17,37 @@ namespace Services
             _userRepository = userRepository;
         }
 
-        public async Task<Guid> CreateOrderAsync(CreateOrderRequest request, CancellationToken ct = default)
+        public async Task<OrderDto> CreateOrderAsync(CreateOrderCommand command, CancellationToken ct = default)
         {
-
-            var existingUser = await _userRepository.GetByIdAsync(request.UsersId);
+            var existingUser = await _userRepository.GetByIdAsync(command.UserId);
 
             if (existingUser is null)
             {
-                throw new InvalidOperationException($"User with ID {request.UsersId} do not exists.");
+                throw new InvalidOperationException($"User with ID {command.UserId} do not exists.");
             }
-            var order = new Order(request.UsersId, request.Title, request.Details, request.Price);
+            var order = new Order(command.UserId, command.Title, command.Details, command.Price);
             await _orderRepository.AddAsync(order, ct);
-            return order.Id;
+            return new OrderDto(order.Id, order.Status.ToString());
         }
 
-        public async Task<Order> GetOrderAsync(Guid orderId)
+        public async Task<Order> GetOrderAsync(GetOrderQuery query)
         {
-            var order = await _orderRepository.GetByIdAsync(orderId);
+            var order = await _orderRepository.GetByIdAsync(query.OrderId);
 
             if (order is null)
             {
-                throw new InvalidOperationException($"Order with ID {orderId} does not exist.");
+                throw new InvalidOperationException($"Order with ID {query.OrderId} does not exist.");
             }
 
             return order;
         }
 
-        public async Task ShipOrderAsync(Guid orderId)
+        public async Task ShipOrderAsync(ShipOrderCommand command)
         {
-            var order = await _orderRepository.GetByIdAsync(orderId);
+            var order = await _orderRepository.GetByIdAsync(command.OrderId);
             if (order == null)
             {
-                throw new InvalidOperationException($"Order {orderId} not found.");
+                throw new InvalidOperationException($"Order {command.OrderId} not found.");
             }
 
             // Business logic execution within the domain model

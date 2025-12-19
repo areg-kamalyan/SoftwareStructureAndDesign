@@ -1,15 +1,16 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Enums;
+using Domain.ValueObjects;
 
 namespace Domain.Entities
 {
     // Domain/Entities/Order.cs
     public class Order
     {
-        public string Title { get; private set; }
-        public string Details { get; private set; }
+        public string Title { get; private set; } = string.Empty;
+        public string Details { get; private set; } = string.Empty;
         public Guid Id { get; private set; }
         public DateTime Date { get; private set; }
-        public string Status { get; private set; }
+        public OrderStatus Status { get; private set; }
         public Money Price { get; private set; }
         public Guid UsersId { get; private set; }
         private Order() { }
@@ -21,15 +22,15 @@ namespace Domain.Entities
             Title = title;
             Details = details;
             Price = price;
-            Status = "Pending";
+            Status = OrderStatus.Created;
         }
 
         // Domain behavior methods enforce business rules
         public void MarkAsShipped()
         {
-            if (Status == "Pending")
+            if (Status == OrderStatus.Pending)
             {
-                Status = "Shipped";
+                Status = OrderStatus.Shipped;
             }
             else
             {
