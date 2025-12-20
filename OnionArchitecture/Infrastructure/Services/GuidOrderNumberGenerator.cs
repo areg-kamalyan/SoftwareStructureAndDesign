@@ -5,7 +5,7 @@ namespace Infrastructure.Services
     {
         public string Generate()
         {
-            return new Guid().ToString();
+            return Guid.NewGuid().ToString();
         }
     }
 }

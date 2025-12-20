@@ -24,7 +24,7 @@ namespace WebApi.Controllers
             _shipOrderUseCase = shipOrderUseCase;
         }
 
-        [HttpPost("{id}/ship")]
+        [HttpPost("{orderNumber}/ship")]
         public async Task<IActionResult> ShipOrder(string orderNumber)
         {
             await _shipOrderUseCase.ExecuteAsync(orderNumber);
@@ -34,11 +34,11 @@ namespace WebApi.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CreateOrderRequest request, CancellationToken ct)
         {
-            var id = await _createUseCase.ExecuteAsync(request.ToCommand(), ct);
-            return CreatedAtAction(nameof(Get), new { id }, new { id });
+            var orderNumber = await _createUseCase.ExecuteAsync(request.ToCommand(), ct);
+            return Ok(orderNumber);
         }
 
-        [HttpGet("Get/{id:guid}")]
+        [HttpGet("Get/{orderNumber:guid}")]
         public async Task<IActionResult> Get(string orderNumber)
         {
             var order = await _getOrderUseCase.ExecuteAsync(orderNumber);

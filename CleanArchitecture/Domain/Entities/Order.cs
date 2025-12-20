@@ -25,6 +25,7 @@ namespace Domain.Entities
             Details = details;
             Price = price;
             Status = OrderStatus.Created;
+            Total = new Money();
         }
 
 
@@ -38,7 +39,7 @@ namespace Domain.Entities
         // Domain behavior methods enforce business rules
         public void MarkAsShipped()
         {
-            if (Status == OrderStatus.Pending)
+            if (Status is OrderStatus.Pending or OrderStatus.Created)
             {
                 Status = OrderStatus.Shipped;
             }

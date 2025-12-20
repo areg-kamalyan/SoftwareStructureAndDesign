@@ -9,7 +9,7 @@ namespace Infrastructure.Persistence.Mappings
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            //builder.HasKey(o => o.Id);
+            builder.HasKey(o => o.Number);
             //builder.Property(o => o.Status)
             //.HasConversion<string>();
 
@@ -20,7 +20,16 @@ namespace Infrastructure.Persistence.Mappings
 
                 money.Property(m => m.Currency)
                      .HasColumnName("PriceCurrency");
+            })
+            .OwnsOne(o => o.Total, money =>
+            {
+                money.Property(m => m.Amount)
+                     .HasColumnName("TotalPriceAmount");
+
+                money.Property(m => m.Currency)
+                     .HasColumnName("TotalPriceCurrency");
             });
         }
     }
 }
+
