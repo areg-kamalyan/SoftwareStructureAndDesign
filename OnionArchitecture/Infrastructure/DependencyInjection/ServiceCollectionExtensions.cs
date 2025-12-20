@@ -1,12 +1,13 @@
-﻿using Services.Interfaces.Messaging;
-using Services.Interfaces.Repositories;
+﻿using Domain.Interfaces;
 using Infrastructure.Messaging;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Services;
+using Services.Interfaces;
 
 namespace Infrastructure.DependencyInjection
 {
@@ -30,6 +31,7 @@ namespace Infrastructure.DependencyInjection
 
 
             services.AddScoped<IOrderShippedEventPublisher, OrderShippedEventPublisher>();
+            services.AddScoped<IOrderNumberGenerator, GuidOrderNumberGenerator>();
 
             return services;
         }

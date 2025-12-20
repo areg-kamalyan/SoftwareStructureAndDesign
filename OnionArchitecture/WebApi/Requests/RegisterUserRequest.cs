@@ -1,4 +1,4 @@
-﻿using Services.Commands;
+﻿using Services.DTOs;
 
 namespace WebApi.Requests
 {
@@ -8,7 +8,7 @@ namespace WebApi.Requests
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
 
-        public RegisterUserCommand ToCommand()
-            => new RegisterUserCommand(Email, FirstName, LastName);
+        public UserDto ToCommand()
+            => new UserDto(Email, FirstName, LastName);
     }
 }

@@ -1,5 +1,5 @@
-﻿using Services.Interfaces.Messaging;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Services.Interfaces;
 namespace Infrastructure.Messaging
 {
     public class OrderShippedEventPublisher : IOrderShippedEventPublisher
@@ -7,7 +7,7 @@ namespace Infrastructure.Messaging
         public void Publish(Order order)
         {
             // In real life: message bus, Kafka, RabbitMQ, etc.
-            Console.WriteLine($"Order {order.Id} shipped event published");
+            Console.WriteLine($"Order {order.Number} shipped event published");
         }
     }
 }

@@ -25,9 +25,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("{id}/ship")]
-        public async Task<IActionResult> ShipOrder(ShipOrderRequest request)
+        public async Task<IActionResult> ShipOrder(string orderNumber)
         {
-            await _shipOrderUseCase.ExecuteAsync(request.ToCommand());
+            await _shipOrderUseCase.ExecuteAsync(orderNumber);
             return Ok();
         }
 
@@ -39,9 +39,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("Get/{id:guid}")]
-        public async Task<IActionResult> Get(GetOrderRequest request) 
+        public async Task<IActionResult> Get(string orderNumber) 
         {
-            var order = await _getOrderUseCase.ExecuteAsync(request.ToQuery());
+            var order = await _getOrderUseCase.ExecuteAsync(orderNumber);
             return Ok(order);
         } 
 

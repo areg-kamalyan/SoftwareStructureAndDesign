@@ -1,10 +1,10 @@
 ﻿using Application.DTOs;
-using Application.UseCases.Orders.CreateOrder;
+using Domain.Entities;
 
 namespace Application.Interfaces.UseCases
 {
     public interface ICreateOrderUseCase
     {
-        Task<OrderDto> ExecuteAsync(CreateOrderCommand command, CancellationToken ct = default);
+        Task<Order> ExecuteAsync(OrderDto data, CancellationToken ct = default);
     }
 }

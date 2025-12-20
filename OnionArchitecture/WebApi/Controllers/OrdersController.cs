@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services;
-using Services.DTOs;
 using WebApi.Requests;
 
 namespace WebApi.Controllers
@@ -22,9 +21,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("{id}/ship")]
-        public async Task<IActionResult> ShipOrder(ShipOrderRequest request)
+        public async Task<IActionResult> ShipOrder(string orderNumber)
         {
-            await _orderService.ShipOrderAsync(request.ToCommand());
+            await _orderService.ShipOrderAsync(orderNumber);
             return Ok();
         }
 
@@ -36,9 +35,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("Get/{id:guid}")]
-        public async Task<IActionResult> Get(GetOrderRequest request)
+        public async Task<IActionResult> Get(string orderNumber)
         {
-            var order = await _orderService.GetOrderAsync(request.ToQuery());
+            var order = await _orderService.GetOrderAsync(orderNumber);
             return Ok(order);
         } 
 

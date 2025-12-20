@@ -1,4 +1,4 @@
 ﻿namespace Application.DTOs
 {
-    public record UserDto(Guid Id, string Email);
+    public record UserDto(string Email, string FirstName, string LastName);
 }

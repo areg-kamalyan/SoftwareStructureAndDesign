@@ -1,6 +1,6 @@
-﻿using Services.Interfaces.Repositories;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Services.Interfaces;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -25,9 +25,9 @@ namespace Infrastructure.Persistence.Repositories
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<User> GetByIdAsync(Guid Id)
+        public async Task<User> GetByIdAsync(Guid UserId)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == UserId);
         }
 
         public async Task SaveChangesAsync()

@@ -1,5 +1,4 @@
 ﻿using Application.Ports.Input;
-using Application.UseCases.Users.RegisterUser;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Requests;
 

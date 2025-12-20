@@ -18,9 +18,9 @@ namespace Infrastructure.Persistence.Repositories
             context.Database.EnsureCreated();
         }
 
-        public async Task<Order> GetByIdAsync(Guid id)
+        public async Task<Order> GetByNumberAsync(string orderNumber)
         {
-            return await _context.Orders.FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Orders.FirstOrDefaultAsync(u => u.Number == orderNumber);
         }
 
         public async Task SaveAsync(Order order)

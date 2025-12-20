@@ -1,5 +1,7 @@
 ﻿
+using Domain.ValueObjects;
+
 namespace Application.DTOs
 {
-    public record OrderDto(Guid Id, string Status);
+    public record OrderDto(Guid UserId, string Title, string Details, Money Price);
 }

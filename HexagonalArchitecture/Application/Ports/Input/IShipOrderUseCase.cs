@@ -1,9 +1,7 @@
-﻿using Application.UseCases.Orders.ShipOrder;
-
-namespace Application.Ports.Input
+﻿namespace Application.Ports.Input
 {
     public interface IShipOrderUseCase
     {
-        Task ExecuteAsync(ShipOrderCommand command);
+        Task ExecuteAsync(string orderNumber);
     }
 }

@@ -1,10 +1,10 @@
 ﻿using Application.DTOs;
-using Application.UseCases.Users.RegisterUser;
+using Domain.Entities;
 
 namespace Application.Ports.Input
 {
     public interface IRegisterUserUseCase
     {
-        Task<UserDto> ExecuteAsync(RegisterUserCommand command);
+        Task<User> ExecuteAsync(UserDto Data);
     }
 }

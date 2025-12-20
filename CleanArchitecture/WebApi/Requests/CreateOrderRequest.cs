@@ -1,4 +1,4 @@
-﻿using Application.UseCases.Orders.CreateOrder;
+﻿using Application.DTOs;
 using Domain.ValueObjects;
 
 namespace WebApi.Requests
@@ -10,7 +10,7 @@ namespace WebApi.Requests
         public string Details { get; set; } = string.Empty;
         public Money Price { get; set; }
 
-        public CreateOrderCommand ToCommand()
-            => new CreateOrderCommand(UserId, Title, Details, Price);
+        public OrderDto ToCommand()
+            => new OrderDto(UserId, Title, Details, Price);
     }
 }

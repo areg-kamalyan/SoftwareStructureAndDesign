@@ -1,12 +1,12 @@
 ﻿using Application.Ports.Input;
 using Application.Ports.Output;
-using Application.UseCases.Orders.CreateOrder;
-using Application.UseCases.Orders.GetOrder;
-using Application.UseCases.Orders.ShipOrder;
-using Application.UseCases.Users.RegisterUser;
+using Application.UseCases.Orders;
+using Application.UseCases.Users;
+using Domain.Interfaces;
 using Infrastructure.Messaging;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +35,7 @@ namespace Infrastructure.DependencyInjection
 
 
             services.AddScoped<IOrderShippedEventPublisher, OrderShippedEventPublisher>();
+            services.AddScoped<IOrderNumberGenerator, GuidOrderNumberGenerator>();
 
             return services;
         }

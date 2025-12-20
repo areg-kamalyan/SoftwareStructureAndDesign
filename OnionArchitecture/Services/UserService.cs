@@ -1,8 +1,6 @@
 ﻿using Domain.Entities;
-using Services.Interfaces.Repositories;
-using Services.Interfaces.Services;
-using Services.Commands;
 using Services.DTOs;
+using Services.Interfaces;
 
 namespace Services
 {
@@ -16,22 +14,22 @@ namespace Services
             _userRepository = userRepository;
         }
 
-        public async Task<UserDto> RegisterUserAsync(RegisterUserCommand command)
+        public async Task<User> RegisterUserAsync(UserDto Data)
         {
-            var existingUser = await _userRepository.GetByEmailAsync(command.Email);
+            var existingUser = await _userRepository.GetByEmailAsync(Data.Email);
 
             if (existingUser != null)
             {
-                throw new InvalidOperationException($"User with email {command.Email} already exists.");
+                throw new InvalidOperationException($"User with email {Data.Email} already exists.");
             }
 
             // The domain entity enforces its own rules
-            var newUser = new User(command.Email, command.FirstName, command.LastName);
+            var newUser = new User(Data.Email, Data.FirstName, Data.LastName);
 
             await _userRepository.AddAsync(newUser);
             await _userRepository.SaveChangesAsync();
 
-            return new UserDto(newUser.Id, newUser.Email);
+            return newUser;
         }
     }
 }
