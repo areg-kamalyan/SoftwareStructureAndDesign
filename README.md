@@ -186,8 +186,7 @@ The Services layer (often called the Application layer) defines use cases and ap
 It coordinates domain objects to fulfill business operations but does not contain technical details.
 
 What goes here
-- Application services
-- Use cases
+- Services
 - Commands & Queries
 - DTOs
 - Interfaces for repositories and external services
